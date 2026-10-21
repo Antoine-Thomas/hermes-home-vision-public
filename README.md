@@ -90,3 +90,11 @@ Licence à choisir (aucune retenue par défaut) :
   d'utilisation, de modification ou de redistribution n'est accordée.
 
 Le fichier `LICENSE` correspondant sera ajouté au choix retenu.
+
+### 📊 Schéma interactif
+👉 [**Consulter l'Architecture interactive Hermes sur Claude.ai**](https://claude.ai/public/artifacts/044f4498-e9a7-457b-b044-d4a99544b8b9)
+
+- Site : <https://searching-murphy.com>
+- GitHub : <https://github.com>
+- Agensi (skills commerciaux) : <https://agensi.io>
+
