@@ -145,8 +145,9 @@ Dernière vérification fonctionnelle : 2026-11-09.
 **Aegis** est le nom de la couche de sécurité. Quatre principes vérifiables : un `.env` par profil (3 ACE
 héritées du dossier parent au 2026-11-09, 0 explicite — durcissement non fait) ; aucun `.env` versionné
 (`git ls-files | grep .env` = 0) ; moindre privilège ; services
-à l'écoute de la boucle locale seulement, plage 54985-55084 réservée ; un SIEM (Wazuh) complète la couche sur
-le papier, mais il n'était pas en écoute au 09/11.
+à l'écoute de la boucle locale seulement, plages réservées au 2026-11-09 : 13508 et 49560-50444 ; aucune ne
+couvre la plage de 54985 à 55084 ; un SIEM (Wazuh) complète la couche sur le papier, mais il n'était pas en
+écoute au 2026-11-09 avant 16:21 ; remis en ligne à 16:21, cluster green.
 
 ## Couche 7 — Réacteur et bridge MARI
 
