@@ -34,7 +34,7 @@ la numérotation 0-7 les englobe, ces valeurs ne servant plus qu'à lire les tex
 
 | # | Couche | Composant principal | Port |
 |---|---|---|---|
-| 0 | Entrées | CLI, Telegram, Discord, email, A2A | — |
+| 0 | Entrées | CLI, Telegram, email (Discord et A2A non configurés) | — |
 | 1 | Gateway et profils | gateway multiplexé, profils isolés | — |
 | 2 | Routage LLM | OmniRoute, proxy NIM | 20128, 20200 |
 | 3 | Outils et extensions | MCP, skills, plugins | — |
@@ -44,7 +44,7 @@ la numérotation 0-7 les englobe, ces valeurs ne servant plus qu'à lire les tex
 | 7 | Réacteur | watcher ANIMA, bridge MARI | 55551-55553 |
 
 ```
-  0 Entrées     CLI · Telegram · Discord · email · A2A
+  0 Entrées     CLI · Telegram · email (Discord, A2A non configurés)
   1 Gateway     gateway unique, profils isolés
   2 Routage     OmniRoute 20128 · proxy NIM 20200
   3 Outils      MCP · skills · plugins
@@ -57,9 +57,10 @@ la numérotation 0-7 les englobe, ces valeurs ne servant plus qu'à lire les tex
 
 ## Couche 0 — Entrées
 
-Cinq canaux : ligne de commande, Telegram, Discord, email et A2A (protocole d'échange entre agents). Aucun
-n'écoute sur un port propre : les plateformes sont des connexions sortantes, configurées par profil. Un canal
-ne sert qu'un profil — jamais de bot partagé ni de `.env` copié.
+Canaux réellement configurés au 2026-11-09 : CLI (toujours), Telegram (`default` + `veille`), email
+(`default`, en échec d'authentification IMAP). Discord et A2A ne sont pas configurés. Aucun canal n'écoute
+sur un port propre : les plateformes sont des connexions sortantes, configurées par profil. Un canal ne sert
+qu'un profil — jamais de bot partagé ni de `.env` copié.
 
 ## Couche 1 — Gateway et profils
 
@@ -89,8 +90,8 @@ alias premium, appelé manuellement en dernier recours, plus cher en tokens et a
 
 ## Couche 3 — Outils et extensions
 
-- **MCP** (Model Context Protocol, le standard par lequel l'agent appelle des serveurs d'outils) : `scite`,
-  `agensi`, `council` sur le profil `security`, `premiere` pour le montage.
+- **MCP** (Model Context Protocol, le standard par lequel l'agent appelle des serveurs d'outils) :
+  `premiere` (`default`, `video`), `council` et `rea` (`security`). Aucun autre MCP configuré au 2026-11-09.
 - **Skills** : bibliothèque de procédures markdown versionnées, chacune décrivant quand l'utiliser.
 - **Plugins** : deux hooks avant l'appel au modèle — `jev-skill-router` (nomme au plus un skill pertinent)
   et `anima-memoire-router` (injecte le contexte mémoire).
@@ -141,15 +142,18 @@ Dernière vérification fonctionnelle : 2026-11-09.
 
 ## Couche 6 — Sécurité Aegis
 
-**Aegis** est le nom de la couche de sécurité. Quatre principes vérifiables : un `.env` par profil avec trois
-ACE non héritées (Système, Administrateurs, utilisateur), aucun secret versionné ; moindre privilège ; services
+**Aegis** est le nom de la couche de sécurité. Quatre principes vérifiables : un `.env` par profil (3 ACE
+héritées du dossier parent au 2026-11-09, 0 explicite — durcissement non fait) ; aucun `.env` versionné
+(`git ls-files | grep .env` = 0) ; moindre privilège ; services
 à l'écoute de la boucle locale seulement, plage 54985-55084 réservée ; un SIEM (Wazuh) complète la couche sur
 le papier, mais il n'était pas en écoute au 09/11.
 
 ## Couche 7 — Réacteur et bridge MARI
 
-**ANIMA** est la couche de supervision : un watcher lit l'état de chaque composant toutes les 30 s et détecte
-les transitions (READY/DEGRADED vers FAILED/BLOCKED). Il ne répare rien, il émet un signal.
+**ANIMA** est la couche de supervision : un watcher lit l'état de chaque composant toutes les 30 s (à
+l'arrêt depuis le 2026-11-03 23:44 — sa relance est décidée séparément ; le compteur MARI reste à 1 tant
+qu'il ne tourne pas) et détecte les transitions (READY/DEGRADED vers FAILED/BLOCKED). Il ne répare rien, il
+émet un signal.
 
 **MARI** est le système cible : un nœud Orleans (framework d'acteurs) dont le bridge expose trois ports fixes
 — 55551 silo, 55552 gateway, 55553 API REST — sur la boucle locale uniquement. `GET /status` est en lecture
