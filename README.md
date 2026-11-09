@@ -214,9 +214,9 @@ un index hybride BM25 + vecteurs.
 
 ## Licence
 
-Le contenu de ce dépôt (documentation, schémas) est sous **CC BY 4.0** — réutilisation,
-modification et redistribution autorisées avec attribution. Texte complet dans
-[`LICENSE`](LICENSE).
+© 2026 Thomas Leroyer (Searching Murphy). Le contenu de ce dépôt (documentation,
+schémas) est sous **CC BY 4.0** — réutilisation, modification et redistribution
+autorisées avec attribution. Texte complet dans [`LICENSE`](LICENSE).
 
 Les skills commerciaux publiés séparément sur Agensi.io font l'objet d'une licence
 propre ; leur mention ici ne confère aucun droit d'usage ni de redistribution.
